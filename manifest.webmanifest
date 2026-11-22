@@ -1,0 +1,17 @@
+{
+  "name": "Speech Spine",
+  "short_name": "Speech Spine",
+  "description": "Plan a speech visually: opening, body acts and closing on a wall with transitions, a speech arc, and slide, prop, script and stage notes.",
+  "id": "speech-spine",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111418",
+  "theme_color": "#181c21",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

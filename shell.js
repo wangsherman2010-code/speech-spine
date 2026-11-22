@@ -269,7 +269,7 @@ function toggleTheme(){const root=document.documentElement;const isDark=root.dat
 function updateThemeBtn(){const btn=document.getElementById("theme-btn");if(!btn)return;const isDark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;btn.textContent=isDark?"☀":"☾";btn.title=isDark?"Switch to light mode":"Switch to dark mode";btn.setAttribute("aria-label",btn.title)}
 const FONT_STEPS=[12,13,14,15,16,17,18,20];
 function applyFont(size){document.documentElement.style.setProperty("--ui-font-size",size+"px")}
-function adjustFont(dir){const cur=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ui-font-size")||"15");const idx=FONT_STEPS.reduce((best,s,i)=>Math.abs(s-cur)<Math.abs(FONT_STEPS[best]-cur)?i:best,0);const next=Math.max(0,Math.min(FONT_STEPS.length-1,idx+dir));applyFont(FONT_STEPS[next]);LS.set("speech.fontSize",FONT_STEPS[next])}
+function adjustFont(dir){const cur=LS.get("speech.fontSize",15);const idx=FONT_STEPS.reduce((best,s,i)=>Math.abs(s-cur)<Math.abs(FONT_STEPS[best]-cur)?i:best,0);const next=Math.max(0,Math.min(FONT_STEPS.length-1,idx+dir));applyFont(FONT_STEPS[next]);LS.set("speech.fontSize",FONT_STEPS[next])}
 
 function planText(o){return typeof o==="string"?o:Array.isArray(o)?o.map(planText).join("\n"):o&&typeof o==="object"?Object.keys(o).filter(k=>k!=="id"&&k!=="kind").map(k=>planText(o[k])).join("\n"):""}
 function markText(text,T){const re=new RegExp("("+T.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")","gi");return String(text).split(re).map((p,i)=>i%2?"<mark>"+esc(p)+"</mark>":esc(p)).join("")}

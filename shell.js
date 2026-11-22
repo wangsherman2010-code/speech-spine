@@ -232,6 +232,9 @@ function renderBarShell(){
 <span class="plan-name" id="plan-name"></span>
 <button class="sync-pill" id="sync-pill" data-sh="pill"><i></i><span></span></button>
 <div class="bar-actions">
+  <button class="tool-btn" data-sh="font-down" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button class="tool-btn" data-sh="font-up" title="Increase text size" aria-label="Increase text size">A+</button>
+  <button class="tool-btn" data-sh="theme" id="theme-btn" title="Toggle dark/light mode" aria-label="Toggle dark/light mode">◑</button>
   <button class="btn sm primary" data-sh="save" title="Save (Ctrl+S)">Save</button>
   <div class="menu"><button class="btn sm" data-sh="menu" aria-expanded="false">File</button>
     <div class="menu-pop" id="file-menu" hidden>
@@ -261,6 +264,13 @@ function renderBar(){
   else if(pending){cls="pending";txt="Changes waiting to sync"}
   else{cls="ok";txt="Synced "+rel(lastSync)}
   pill.className="sync-pill "+cls;label.textContent=txt;pill.title=ghReady()?"Sync with GitHub now":"Set up GitHub sync"}
+/* ---------- theme + font size ---------- */
+function toggleTheme(){const root=document.documentElement;const isDark=root.dataset.theme?root.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;const next=isDark?"light":"dark";root.dataset.theme=next;LS.set("speech.theme",next);updateThemeBtn()}
+function updateThemeBtn(){const btn=document.getElementById("theme-btn");if(!btn)return;const isDark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;btn.textContent=isDark?"☀":"☾";btn.title=isDark?"Switch to light mode":"Switch to dark mode";btn.setAttribute("aria-label",btn.title)}
+const FONT_STEPS=[12,13,14,15,16,17,18,20];
+function applyFont(size){document.documentElement.style.setProperty("--ui-font-size",size+"px")}
+function adjustFont(dir){const cur=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ui-font-size")||"15");const idx=FONT_STEPS.reduce((best,s,i)=>Math.abs(s-cur)<Math.abs(FONT_STEPS[best]-cur)?i:best,0);const next=Math.max(0,Math.min(FONT_STEPS.length-1,idx+dir));applyFont(FONT_STEPS[next]);LS.set("speech.fontSize",FONT_STEPS[next])}
+
 function planText(o){return typeof o==="string"?o:Array.isArray(o)?o.map(planText).join("\n"):o&&typeof o==="object"?Object.keys(o).filter(k=>k!=="id"&&k!=="kind").map(k=>planText(o[k])).join("\n"):""}
 function markText(text,T){const re=new RegExp("("+T.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")","gi");return String(text).split(re).map((p,i)=>i%2?"<mark>"+esc(p)+"</mark>":esc(p)).join("")}
 function libSnippet(text,T){const lines=text.split("\n").filter(l=>T.some(t=>l.toLowerCase().includes(t)));if(!lines.length)return "";
@@ -323,10 +333,37 @@ function jsonModal(mode){
 
 function appMode(){
   renderBarShell();
+  updateThemeBtn();
   const side=document.createElement("div");side.innerHTML='<div class="scrim" id="scrim" hidden data-sh="lib-close"></div><aside class="library" id="library" hidden aria-label="Your plans"></aside>';
   document.body.append(...side.childNodes);
   if(!Store.ids().length){const st=E.exampleState();Store.put(newRec(st))}
   const want=LS.get("speech.cur",null);openPlan(Store.get(want)?want:Store.ids()[0]);
+
+  // floating horizontal scroll bar — mirrors .board-wrap scroll so the user can scroll the wall from anywhere on the page
+  const hBar=document.createElement("div");
+  hBar.className="h-scroll-bar";hBar.setAttribute("hidden","");
+  hBar.innerHTML='<span class="h-scroll-label">↔</span><input type="range" id="h-scroll" min="0" max="0" value="0" step="1" aria-label="Scroll the speech wall left or right">';
+  document.body.appendChild(hBar);
+  let hSyncing=false;
+  function syncHBar(){
+    const bw=document.querySelector(".board-wrap");const rng=document.getElementById("h-scroll");if(!bw||!rng)return;
+    const max=Math.max(0,bw.scrollWidth-bw.clientWidth);
+    if(String(rng.max)!==String(max))rng.max=max;
+    if(!hSyncing)rng.value=bw.scrollLeft;
+    if(max>8)hBar.removeAttribute("hidden");else hBar.setAttribute("hidden","");}
+  document.getElementById("h-scroll").addEventListener("input",function(){
+    const bw=document.querySelector(".board-wrap");if(!bw)return;
+    hSyncing=true;bw.scrollLeft=+this.value;hSyncing=false;});
+  document.addEventListener("scroll",function(e){
+    if(e.target&&e.target.classList&&e.target.classList.contains("board-wrap"))syncHBar();},true);
+  let hRO=null;
+  function attachHRO(){
+    const bw=document.querySelector(".board-wrap");if(!bw){setTimeout(attachHRO,150);return;}
+    if(hRO)hRO.disconnect();hRO=new ResizeObserver(syncHBar);hRO.observe(bw);
+    const board=bw.querySelector(".board");if(board)hRO.observe(board);
+    syncHBar();}
+  attachHRO();
+
   assets().catch(()=>{});
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 
@@ -352,6 +389,9 @@ function appMode(){
     else if(act==="gh-off")arm(a,()=>{LS.del("speech.gh");closeModal();renderBar();toast("Sync is off on this device. Your plans stay here and on GitHub.")});
     else if(act==="modal-close")closeModal();
     else if(act==="pill"){if(ghReady())syncNow();else settingsModal()}
+    else if(act==="theme")toggleTheme();
+    else if(act==="font-up")adjustFont(1);
+    else if(act==="font-down")adjustFont(-1);
     else if(act==="delete")arm(a,()=>{menu.hidden=true;deletePlan()});
   });
   $("#overlay").addEventListener("click",e=>{if(e.target.classList.contains("modal"))closeModal()});
@@ -378,6 +418,14 @@ function appMode(){
       reg.addEventListener("updatefound",()=>{const w=reg.installing;if(w)w.addEventListener("statechange",()=>{if(w.state==="installed"&&navigator.serviceWorker.controller)offer(w)})})}).catch(()=>{});
     navigator.serviceWorker.addEventListener("controllerchange",()=>{if(wantReload)location.reload()})}
 }
+
+// restore persisted theme and font size before rendering (applies to both file mode and app mode)
+(function(){
+  const theme=LS.get("speech.theme",null);
+  if(theme)document.documentElement.dataset.theme=theme;
+  const size=LS.get("speech.fontSize",null);
+  if(size)document.documentElement.style.setProperty("--ui-font-size",size+"px");
+})();
 
 if(FILE_MODE)fileMode();else appMode();
 })();

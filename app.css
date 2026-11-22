@@ -1,15 +1,15 @@
 /* Layout: sticky app bar + header + arc graph + horizontally scrolling speech wall + card drawer (right) + plan library (left) */
 :root{
   /* General Documents design system: tokens (light) */
-  --surface:#ffffff;--surface-alt:#f3f6f7;--tint:#e2eff2;--ink:#1a2226;--ink-muted:#55616a;
-  --primary:#0f4c5c;--on-primary:#ffffff;--accent:#e8641a;--on-accent:#1a2226;--accent-ink:#a8440a;
-  --border:#7d8a91;--hairline:#d9dfe2;--positive:#0a6c74;--caution:#8a5200;--critical:#b3261e;
+  --surface:#ffffff;--surface-alt:#e6f4f8;--tint:#cdeaf1;--ink:#101c21;--ink-muted:#44545c;
+  --primary:#0a6f87;--on-primary:#ffffff;--accent:#ff6b1a;--on-accent:#1a2226;--accent-ink:#b8420a;
+  --border:#6f8791;--hairline:#bcdbe4;--positive:#0a6c74;--caution:#8a5200;--critical:#b3261e;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;
   --radius-sm:4px;--radius-md:8px;--radius-lg:16px;
   /* app roles mapped onto the tokens */
   --bg:var(--surface-alt);--panel:var(--surface);--card:var(--surface);--muted:var(--ink-muted);--line:var(--hairline);
   --warn:var(--critical);--ok:var(--positive);--hl:var(--primary);
-  --c-pro:#55616a;--c-a1:#0f4c5c;--c-a2:#a8440a;--c-a3:#1a2226;--c-a4:#5b8e9a;--c-clo:#3f4a51;
+  --c-pro:#5b4fd6;--c-a1:#0a7f9a;--c-a2:#e8590c;--c-a3:#14894f;--c-a4:#c98600;--c-clo:#c2306f;
   --f-display:'DM Sans',Calibri,'Segoe UI',Arial,sans-serif;
   --f-body:'Source Sans 3',Calibri,'Segoe UI',Arial,sans-serif;
   --f-mono:var(--f-display);
@@ -17,16 +17,16 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --surface:#0f171a;--surface-alt:#172227;--tint:#1d3b44;--ink:#eaf0f2;--ink-muted:#a3b0b6;
-  --primary:#7cc7d6;--on-primary:#0a1a1f;--accent:#f08a4b;--on-accent:#1a1208;--accent-ink:#f5a370;
+  --primary:#4fd0e8;--on-primary:#0a1a1f;--accent:#ff8a3d;--on-accent:#1a1208;--accent-ink:#f5a370;
   --border:#7a888f;--hairline:#2c3a40;--positive:#69c5cf;--caution:#f0b45a;--critical:#ff9a90;
   --bg:#0a1114;
-  --c-pro:#a3b0b6;--c-a1:#7cc7d6;--c-a2:#f5a370;--c-a3:#eaf0f2;--c-a4:#4f8a97;--c-clo:#c4cfd4;color-scheme:dark}}
+  --c-pro:#a69dff;--c-a1:#4fd0e8;--c-a2:#ff9a5c;--c-a3:#5fdc9a;--c-a4:#ffcf4d;--c-clo:#ff7fb0;color-scheme:dark}}
 :root[data-theme="dark"]{
   --surface:#0f171a;--surface-alt:#172227;--tint:#1d3b44;--ink:#eaf0f2;--ink-muted:#a3b0b6;
-  --primary:#7cc7d6;--on-primary:#0a1a1f;--accent:#f08a4b;--on-accent:#1a1208;--accent-ink:#f5a370;
+  --primary:#4fd0e8;--on-primary:#0a1a1f;--accent:#ff8a3d;--on-accent:#1a1208;--accent-ink:#f5a370;
   --border:#7a888f;--hairline:#2c3a40;--positive:#69c5cf;--caution:#f0b45a;--critical:#ff9a90;
   --bg:#0a1114;
-  --c-pro:#a3b0b6;--c-a1:#7cc7d6;--c-a2:#f5a370;--c-a3:#eaf0f2;--c-a4:#4f8a97;--c-clo:#c4cfd4;color-scheme:dark}
+  --c-pro:#a69dff;--c-a1:#4fd0e8;--c-a2:#ff9a5c;--c-a3:#5fdc9a;--c-a4:#ffcf4d;--c-clo:#ff7fb0;color-scheme:dark}
 
 *{box-sizing:border-box}
 mark{background:var(--accent);color:var(--on-accent);border-radius:2px;padding:0 1px}
@@ -113,7 +113,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .top-main{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:4px}
 .eyebrow{font-family:var(--f-display);font-weight:700;font-size:11px;line-height:14px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-ink);padding-left:7px;display:flex;align-items:center;gap:var(--space-2)}
 .eyebrow::before{content:"";width:40px;height:6px;background:var(--accent);border-radius:var(--radius-sm)}
-.h-title{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,5.5vw,3rem);line-height:1.08;letter-spacing:-.5px}
+.h-title{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4.6vw,2.5rem);line-height:1.08;letter-spacing:-.5px}
 .h-log{font-size:18px;line-height:27px;color:var(--ink);max-width:68ch}
 .h-meta{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;padding-left:7px;font-size:13px;color:var(--muted)}
 .h-meta label{display:flex;align-items:center;gap:4px}

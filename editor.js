@@ -42,7 +42,7 @@ function blankState(){return normalize({v:1,id:uid(),updatedAt:Date.now(),exampl
 function exampleState(){
   const D=(type,desc)=>({id:uid(),type,desc});
   return normalize({v:1,id:uid(),updatedAt:Date.now(),example:true,delivery:true,
-  speech:{title:"Make Wednesday Meeting-Free (example)",speaker:"Sample speaker",audience:"Team managers at a mid-size company",occasion:"Quarterly leadership forum",target:7,purpose:"persuade",
+  speech:{title:"Make Wednesday Meeting-Free (example)",speaker:"Sample speaker",audience:"Team managers",occasion:"Leadership forum",target:7,purpose:"persuade",
     specific:"To persuade my audience of managers to trial one meeting-free Wednesday with their teams over the next four weeks.",
     central:"One protected day without meetings gives teams the focus to do their best work, and it costs almost nothing to try."},
   blocks:[
@@ -60,7 +60,7 @@ function exampleState(){
        stage:"Count the three parts on your fingers.",
        slides:[D("Big phrase","Broken. Fixed. Try it.")]})]}],
      trans:{out:"So that is where we are headed. First, the problem.",outDur:3,in:"Let's start with your own Tuesday.",inDur:3}},
-   {kind:"act",title:"Our days are chopped into slivers",purpose:"Make the cost of constant meetings feel personal and measurable.",cols:[
+   {kind:"act",title:"Our days are chopped up",purpose:"Make the cost of constant meetings feel personal and measurable.",cols:[
      {title:"Look at your own week",summary:"A quick self-audit with the audience.",cards:[
        bt("Count your Tuesday",35,6,"Make the problem theirs before arguing anything.",{
          say:"Show of hands: back-to-back meetings yesterday?\nHow many hours of uninterrupted work did you get?\nMost of us: under one",

@@ -4,8 +4,8 @@
 const E=window.SpeechEditor;
 const FILE_MODE=document.body.dataset.mode==="file";
 const APP_URL=FILE_MODE?(window.SPEECH_APP_URL||""):location.href.split(/[?#]/)[0].replace(/index\.html$/,"");
-const FONT_LINK='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">';
-const LOGO='<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1d1b3a"/><path d="M7 7.5h18a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5H15l-5.5 4.5v-4.5H7A2.5 2.5 0 0 1 4.5 19v-9A2.5 2.5 0 0 1 7 7.5z" fill="none" stroke="#9ad1ff" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 17.5l4-4.5 3.5 3 6-6" fill="none" stroke="#ff8fa3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="10" r="2" fill="#ffd166"/></svg>';
+const FONT_LINK='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap">';
+const LOGO='<svg viewBox="0 0 32 32" aria-hidden="true"><rect width=\"32\" height=\"32\" rx=\"7\" fill=\"#0f4c5c\"/><path d=\"M7 7.5h18a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5H15l-5.5 4.5v-4.5H7A2.5 2.5 0 0 1 4.5 19v-9A2.5 2.5 0 0 1 7 7.5z\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M8.5 17.5l4-4.5 3.5 3 6-6\" fill=\"none\" stroke=\"#f08a4b\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"22\" cy=\"10\" r=\"2\" fill=\"#e2eff2\"/></svg>';
 const FS=typeof window.showOpenFilePicker==="function";
 const $=s=>document.querySelector(s);
 const esc=E.esc;
